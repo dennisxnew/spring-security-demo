@@ -22,7 +22,6 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> map = new HashMap<>();
-        if(httpServletResponse.get)
         map.put("errorMsg", "系統閒置時間過長，將導頁至登入頁。");
         map.put("appCode", "SP002");
         httpServletResponse.setContentType("application/json;charset=UTF-8");
