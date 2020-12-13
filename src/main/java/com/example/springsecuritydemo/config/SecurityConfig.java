@@ -10,8 +10,10 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.session.SessionManagementFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletResponse;
@@ -31,23 +33,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationFailureHandler failureHandler;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authProvider);
-    }
+    @Autowired
+    private LogoutSuccessHandler testLogoutSuccessHandler;
 
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.authenticationProvider(authProvider);
+//    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-            http.exceptionHandling()
-                .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-                .and()
-                    .csrf().disable()
-                .authorizeRequests()
+        http.csrf().disable()
+//            .exceptionHandling(exceptionHandle -> exceptionHandle
+//                .authenticationEntryPoint(new RestAuthenticationEntryPoint())ini
+//            )
+            .authorizeRequests(auth -> auth
                 .antMatchers("/test/**","/invalid", "/expired").permitAll()
                 .anyRequest().authenticated()
-                .and()
-                    .addFilterBefore(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                    .addFilterAfter(expiredSessionFilter(), SessionManagementFilter.class);
+            ).logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(testLogoutSuccessHandler)
+                .permitAll()
+            )
+            .addFilterAt(loginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterAt(loginAuthenticationNo2Filter(), UsernamePasswordAuthenticationFilter.class);
+//            .addFilterAfter(expiredSessionFilter(), SessionManagementFilter.class);
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl("/invalid").maximumSessions(1).expiredUrl("/expired")
 //                .and()
 //                .formLogin().permitAll()
@@ -58,6 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
+
     @Bean
     LoginAuthenticationFilter loginAuthenticationFilter() throws Exception {
         LoginAuthenticationFilter filter = new LoginAuthenticationFilter();
@@ -65,6 +75,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setAuthenticationSuccessHandler(successHandler);
         filter.setAuthenticationFailureHandler(failureHandler);
         filter.setFilterProcessesUrl("/performlogin");
+        return filter;
+    }
+
+    @Bean
+    LoginAuthenticationFilter loginAuthenticationNo2Filter() throws Exception {
+        LoginAuthenticationFilter filter = new LoginAuthenticationFilter();
+        filter.setAuthenticationManager(authenticationManagerBean());
+        filter.setAuthenticationSuccessHandler(successHandler);
+        filter.setAuthenticationFailureHandler(failureHandler);
+        filter.setFilterProcessesUrl("/performloginNo2");
         return filter;
     }
 

@@ -30,10 +30,10 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
 
 //        httpServletResponse.setContentType("application/json;charset=UTF-8");
 //        httpServletResponse.getWriter().write(objectMapper.writeValueAsString(authentication));
-        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        Map<String, Object> data = new HashMap<>();
-        data.put("timestamp", Calendar.getInstance().getTime());
-
-        httpServletResponse.getOutputStream().println(objectMapper.writeValueAsString(data));
+//        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//        Map<String, Object> data = new HashMap<>();
+//        data.put("timestamp", Calendar.getInstance().getTime());
+//
+//        httpServletResponse.getOutputStream().println(objectMapper.writeValueAsString(data));
     }
 }
