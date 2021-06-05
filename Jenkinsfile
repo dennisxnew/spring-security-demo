@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker build spring-security-demo'
+                sh 'docker build -t spring-security-demo'
             }
         }
     }
