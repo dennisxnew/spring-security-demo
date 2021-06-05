@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { dockerfile true }
     tools {
         maven 'Maven 3.6.0'
         jdk 'JDK 1.8'
@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker build -t spring-security-demo .'
+                sh 'ls'
             }
         }
     }
