@@ -27,7 +27,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
 
         System.out.println("登入成功");
 
-        httpServletResponse.setContentType("application/json;charset=UTF-8");
-        httpServletResponse.getWriter().write(objectMapper.writeValueAsString(authentication));
+//        httpServletResponse.setContentType("application/json;charset=UTF-8");
+//        httpServletResponse.getWriter().write(objectMapper.writeValueAsString(authentication));
     }
 }

@@ -13,7 +13,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         return new UsernamePasswordAuthenticationToken(
-                "name", "password", new ArrayList<>());
+                authentication.getPrincipal(), authentication.getCredentials(), new ArrayList<>());
     }
 
     @Override

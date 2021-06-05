@@ -1,0 +1,9 @@
+version: '2.2'
+services:
+  spring-security-demo:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: spring-security-demo
+    ports:
+      - 8080:8080
