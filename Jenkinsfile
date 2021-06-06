@@ -10,5 +10,14 @@ pipeline {
                 sh 'ls'
             }
         }
+        stage('Build image') {
+           app = docker.build("spring-security-demo")
+        }
+        stage('Push image') {
+            docker.withRegistry('http://registry.local:5000') {
+                app.push("spring-security-demo-1.0.0")
+                app.push("latest")
+            }
+        }
     }
 }
