@@ -4,7 +4,7 @@ pipeline {
         maven 'Maven 3.6.0'
         jdk 'JDK 1.8'
     }
-    stages {
+    node {
         stage('Build image') {
            app = docker.build("spring-security-demo")
         }
