@@ -5,11 +5,6 @@ pipeline {
         jdk 'JDK 1.8'
     }
     stages {
-        stage('Build') {
-            steps {
-                sh 'ls'
-            }
-        }
         stage('Build image') {
            app = docker.build("spring-security-demo")
         }
